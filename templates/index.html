@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
+</head>
+<body class="flex flex-col min-h-screen bg-gray-100">
+    <!-- Disclaimer -->
+    <div class="bg-yellow-100 border-yellow-500 text-yellow-700 px-4 py-3 mb-4" role="alert">
+        <p class="font-bold">Disclaimer:</p>
+        <p class="text-sm">Unless you log in, there's no guarantee the list will not lose its data.</p>
+    </div>
+
+    <header class="bg-white border-b p-4 flex justify-between items-center">
+        <div class="flex items-center">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="w-10 h-10 mr-2">
+            <h1 class="text-xl font-semibold">NAME HERE</h1>
+        </div>
+        <div class="flex items-center">
+            <button id="toggle-dark-mode" class="bg-gray-200 hover:bg-gray-300 rounded-full w-8 h-8 flex items-center justify-center mr-2">
+                <i id="dark-mode-icon" class="fas fa-moon text-gray-700"></i>
+            </button>
+            <a href="/signin" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded inline-block">Sign In</a>
+        </div>
+    </header>
+
+    <div class="container mx-auto py-8">
+        <div class="grid grid-cols-4 gap-4">
+            <div class="bg-white rounded shadow p-4">
+                <h2 class="text-lg font-semibold mb-4">Urgent Tasks</h2>
+                <ul id="urgent-tasks" class="space-y-2"></ul>
+                <form id="add-urgent-task-form" class="mt-4">
+                    <input type="text" id="urgent-task-input" class="w-full border rounded py-2 px-3 focus:outline-none focus:border-blue-500" placeholder="Add urgent task...">
+                    <button type="submit" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-2 inline-block hover:bg-blue-600 transition-colors duration-300">Add Task</button>
+                </form>
+            </div>
+
+            <div class="bg-white rounded shadow p-4">
+                <h2 class="text-lg font-semibold mb-4">Normal Tasks</h2>
+                <ul id="normal-tasks" class="space-y-2"></ul>
+                <form id="add-normal-task-form" class="mt-4">
+                    <input type="text" id="normal-task-input" class="w-full border rounded py-2 px-3 focus:outline-none focus:border-blue-500" placeholder="Add normal task...">
+                    <button type="submit" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-2 inline-block hover:bg-blue-600 transition-colors duration-300">Add Task</button>
+                </form>
+            </div>
+
+            <div class="bg-white rounded shadow p-4">
+                <h2 class="text-lg font-semibold mb-4">Future Tasks</h2>
+                <ul id="future-tasks" class="space-y-2"></ul>
+                <form id="add-future-task-form" class="mt-4">
+                    <input type="text" id="future-task-input" class="w-full border rounded py-2 px-3 focus:outline-none focus:border-blue-500" placeholder="Add future task...">
+                    <button type="submit" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-2 inline-block hover:bg-blue-600 transition-colors duration-300">Add Task</button>
+                </form>
+            </div>
+
+            <div class="bg-white rounded shadow p-4">
+                <h2 class="text-lg font-semibold mb-4">Repetitive Tasks</h2>
+                <ul id="repetitive-tasks" class="space-y-2"></ul>
+                <form id="add-repetitive-task-form" class="mt-4">
+                    <input type="text" id="repetitive-task-input" class="w-full border rounded py-2 px-3 focus:outline-none focus:border-blue-500" placeholder="Add repetitive task...">
+                    <button type="submit" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-2 inline-block hover:bg-blue-600 transition-colors duration-300">Add Task</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {% include 'footer.html' %}
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
