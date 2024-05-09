@@ -1,7 +1,9 @@
+// main.component.ts
 import { Component } from '@angular/core';
 import { WeatherService } from '../services/weather.service';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @Component({
   selector: 'app-main',

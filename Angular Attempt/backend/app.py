@@ -4,18 +4,24 @@ import speech_recognition as sr
 import requests
 from flask import Flask, request, jsonify
 from flask_caching import Cache
+from flask_cors import CORS
 
 app = Flask(__name__)
+# Allow CORS for all domains on all routes
+CORS(app, resources={r"/*": {"origins": "*"}})
+
 cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 
 API_KEY = os.getenv('OPENWEATHER_API_KEY', 'default_api_key')
 
 
-@cache.memoize(timeout=300)  # Cache data for 5 minutes
 def fetch_weather(city):
+    print(API_KEY)
     url = f'http://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric'
+    print(url)
     response = requests.get(url)
     if response.status_code == 200:
+        print("responded")
         data = response.json()
         return {
             'city': city,
@@ -41,9 +47,11 @@ def recognize_city():
 @app.route('/weather', methods=['GET'])
 def get_weather():
     city = request.args.get('city')
+    print(city)
     voice_input = request.args.get('voice')
+    print(voice_input)
 
-    if voice_input:
+    if voice_input is not None:
         city = recognize_city()
         if 'error' in city:
             return jsonify(city), 400
@@ -55,6 +63,19 @@ def get_weather():
     if 'error' in weather_data:
         return jsonify(weather_data), 500
 
+    return jsonify(weather_data)
+
+
+@app.route('/weather/byip', methods=['GET'])
+def get_weather_by_ip():
+    ip = request.remote_addr
+    print("ip", ip)
+    if not ip:
+        ip = request.remote_addr
+    response = requests.get(f'http://ip-api.com/json/{ip}')
+    data = response.json()
+    city = data['city']
+    weather_data = fetch_weather(city)
     return jsonify(weather_data)
 
 
