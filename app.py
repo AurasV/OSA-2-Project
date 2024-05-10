@@ -1,7 +1,10 @@
+# app.py
+import json
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import text
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
@@ -15,6 +18,13 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(120), nullable=False)
+
+
+class Task(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    task = db.Column(db.String(255), nullable=False)
+    type = db.Column(db.String(20), nullable=False)
 
 
 # User loader function required by Flask-Login
@@ -38,7 +48,18 @@ def signin():
         if user and check_password_hash(user.password_hash, password):
             login_user(user)
             flash('You have been successfully logged in!', 'success')
-            return redirect(url_for('index'))
+
+            # Retrieve tasks from the database
+            tasks = Task.query.filter_by(user_id=user.id).all()
+            stored_tasks = {}
+            for task in tasks:
+                stored_tasks[str(task.id)] = {'task': task.task, 'type': task.type}
+            # Update local storage
+            response = redirect(url_for('index'))
+            response.set_cookie('tasks', json.dumps(stored_tasks))
+
+            # Redirect user to the main page
+            return response
         else:
             flash('Invalid email or password', 'error')
 
@@ -72,22 +93,110 @@ def register():
         return jsonify({'success': True, 'message': 'Account created successfully! You can now log in.'})
 
 
-@app.route('/delete_all_users', methods=['GET'])
-def delete_all_users():
+@app.route('/drop_task_table', methods=['GET'])
+def drop_task_table():
     try:
-        db.session.query(User).delete()
-        db.session.commit()
+        # Execute a raw SQL query to drop the Task table
+        with db.engine.connect() as conn:
+            result = conn.execute(text('DROP TABLE IF EXISTS task'))
+        return jsonify({'success': True, 'message': 'Task table dropped successfully!'})
     except Exception as e:
-        db.session.rollback()
+        return jsonify({'success': False, 'message': 'Failed to drop Task table: ' + str(e)})
 
-    return redirect(url_for('index'))
+
+@app.route('/recreate_task_table', methods=['GET'])
+def recreate_task_table():
+    try:
+        # Execute a raw SQL query to recreate the Task table
+        with db.engine.connect() as conn:
+            query = """
+            CREATE TABLE IF NOT EXISTS task (
+                id SERIAL PRIMARY KEY,
+                task TEXT NOT NULL,
+                type VARCHAR(20) NOT NULL
+            )
+            """
+            result = conn.execute(text(query))
+        return jsonify({'success': True, 'message': 'Task table recreated successfully!'})
+    except Exception as e:
+        return jsonify({'success': False, 'message': 'Failed to recreate Task table: ' + str(e)})
+
+
+@app.route('/drop_user_table', methods=['GET'])
+def drop_user_table():
+    try:
+        # Execute a raw SQL query to drop the User table
+        with db.engine.connect() as conn:
+            result = conn.execute(text('DROP TABLE IF EXISTS user'))
+        return jsonify({'success': True, 'message': 'User table dropped successfully!'})
+    except Exception as e:
+        return jsonify({'success': False, 'message': 'Failed to drop User table: ' + str(e)})
+
+
+@app.route('/recreate_user_table', methods=['GET'])
+def recreate_user_table():
+    try:
+        # Execute a raw SQL query to recreate the User table
+        with db.engine.connect() as conn:
+            query = """
+            CREATE TABLE IF NOT EXISTS user (
+                id SERIAL PRIMARY KEY,
+                email VARCHAR(255) UNIQUE NOT NULL,
+                password_hash VARCHAR(255) NOT NULL
+            )
+            """
+            result = conn.execute(text(query))
+        return jsonify({'success': True, 'message': 'User table recreated successfully!'})
+    except Exception as e:
+        return jsonify({'success': False, 'message': 'Failed to recreate User table: ' + str(e)})
+
+
+@app.route('/get_tasks', methods=['GET'])
+@login_required
+def get_tasks():
+    user_id = current_user.id
+    tasks = Task.query.filter_by(user_id=user_id).all()
+    task_list = [{'id': task.id, 'task': task.task, 'type': task.type} for task in tasks]
+    return jsonify({'success': True, 'tasks': task_list})
+
+
+@app.route('/add_task', methods=['POST'])
+@login_required
+def add_task():
+    task_text = request.form['task']
+    task_type = request.form['type']
+    user_id = current_user.id
+
+    # Save task to the database
+    new_task = Task(user_id=user_id, task=task_text, type=task_type)
+    db.session.add(new_task)
+    db.session.commit()
+
+    # Update local storage
+    stored_tasks = json.loads(request.cookies.get('tasks', '{}'))
+    stored_tasks[str(new_task.id)] = {'task': task_text, 'type': task_type}
+    response = jsonify({'success': True, 'message': 'Task added successfully!', 'task_id': new_task.id})
+    response.set_cookie('tasks', json.dumps(stored_tasks))
+    return response
+
+
+@app.route('/reload_data', methods=['GET'])
+@login_required
+def reload_data():
+    user_id = current_user.id
+    tasks = Task.query.filter_by(user_id=user_id).all()
+    stored_tasks = {}
+    for task in tasks:
+        stored_tasks[str(task.id)] = {'task': task.task, 'type': task.type}
+    response = jsonify({'success': True, 'tasks': stored_tasks})
+    response.set_cookie('tasks', json.dumps(stored_tasks))
+    return response
 
 
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
-    flash('You have been logged out', 'info')
     return redirect(url_for('index'))
 
 

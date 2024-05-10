@@ -33,3 +33,9 @@ body {
 main {
     flex: 1;
 }
+
+.form-square {
+    max-width: 400px; /* Adjust the max-width as needed */
+    overflow: hidden;
+    word-wrap: break-word;
+}
