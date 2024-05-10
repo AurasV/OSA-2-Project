@@ -15,8 +15,10 @@
     <!-- Header -->
     <header class="bg-white border-b p-4 flex justify-between items-center">
         <div class="flex items-center">
-            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="w-10 h-10 mr-2">
-            <h1 class="text-xl font-semibold">NAME HERE</h1>
+            <a href="/" class="flex items-center">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="w-10 h-10 mr-2">
+                <h1 class="text-xl font-semibold">NAME HERE</h1>
+            </a>
         </div>
         <div class="flex items-center">
             <button id="toggle-dark-mode" class="bg-gray-200 hover:bg-gray-300 rounded-full w-8 h-8 flex items-center justify-center mr-2">
@@ -30,7 +32,7 @@
     <main class="container mx-auto px-4 py-8">
         <div class="max-w-md mx-auto bg-white rounded-lg overflow-hidden shadow-lg p-6 dark:bg-gray-800 dark:text-white">
             <!-- Sign In Form -->
-            <form>
+            <form method="post">
                 <!-- Email Address field -->
                 <div class="mb-4">
                     <label for="email" class="block text-sm font-semibold">Email Address</label>
@@ -46,6 +48,15 @@
                 <!-- Text to prompt registration -->
                 <p class="text-sm text-gray-600 mt-2 text-center">Don't have an account? <a href="/register" class="text-blue-500">Register!</a></p>
             </form>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="mt-4 bg-{{ category }}">
+                            <p class="text-sm text-white py-2 px-4">{{ message }}</p>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
         </div>
     </main>
 
