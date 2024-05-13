@@ -13,7 +13,6 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <!-- Custom Styles -->
     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
-
 </head>
 <body class="flex flex-col min-h-screen bg-gray-100">
     <!-- Disclaimer -->
@@ -99,5 +98,9 @@
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
     <!-- Custom JavaScript for Tasks -->
     <script src="{{ url_for('static', filename='js/tasks.js') }}"></script>
+    <!-- Custom JavaScript for Task Editing -->
+    <script src="{{ url_for('static', filename='js/task_edit.js') }}"></script>
+    <!-- Custom JavaScript for Task Deletion -->
+    <script src="{{ url_for('static', filename='js/task_delete.js') }}"></script>
 </body>
 </html>

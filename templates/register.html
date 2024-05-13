@@ -58,51 +58,9 @@
         </div>
     </main>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            // Password restrictions
-            $('#password-info').text('Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number.');
-
-            // Register button click event
-            $('#register-button').click(function() {
-                // Retrieve form data
-                var email = $('#email').val();
-                var password = $('#password').val();
-                var confirmPassword = $('#confirm-password').val();
-
-                // Password validation
-                var passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[0-9a-zA-Z!@#$%^&*]{8,}$/;
-                if (!passwordRegex.test(password)) {
-                    console.log(password)
-                    $('#registration-message').text('Password does not meet requirements.');
-                    $('#registration-message').addClass('text-red-500');
-                    return;
-                }
-
-                // Send AJAX request to register user
-                $.ajax({
-                    type: 'POST',
-                    url: '/register',
-                    data: {
-                        email: email,
-                        password: password,
-                        'confirm-password': confirmPassword
-                    },
-                    success: function(response) {
-                        // Show registration message
-                        $('#registration-message').text(response.message);
-                        if (response.success) {
-                            $('#registration-message').addClass('text-green-500');
-                        } else {
-                            $('#registration-message').addClass('text-red-500');
-                        }
-                    }
-                });
-            });
-        });
-    </script>
     <!-- Custom JavaScript for dark mode and cookie retrieval -->
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <!-- Custom JavaScript for registration -->
+    <script src="{{ url_for('static', filename='js/register.js') }}"></script>
 </body>
 </html>
