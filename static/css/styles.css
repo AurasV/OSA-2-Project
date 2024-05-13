@@ -40,3 +40,7 @@ main {
     overflow: hidden;
     word-wrap: break-word;
 }
+
+.credit_footer{
+    color: red;
+}
