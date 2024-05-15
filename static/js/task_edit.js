@@ -34,7 +34,11 @@ $(document).ready(function() {
     // Function to add event listeners for showing and hiding edit icon on hover
     function addHoverListeners() {
         $('.task-list').on('mouseenter', 'li', function() {
-            // Only append the edit icon if it's not already present
+            // Only append the edit icon if it's not already present same for delete icon
+            if(!$(this).find('.delete-task-icon').length) {
+                $(this).append('<i class="fas fa-trash delete-task-icon ml-2 text-red-500 cursor-pointer hidden"></i>');
+            }
+
             if (!$(this).find('.edit-task-icon').length) {
                 $(this).append('<i class="fas fa-edit edit-task-icon ml-2 text-gray-500 cursor-pointer"></i>');
             }
