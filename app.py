@@ -171,7 +171,6 @@ def delete_task():
 @app.route('/drop_task_table', methods=['GET'])
 def drop_task_table():
     try:
-        # Execute a raw SQL query to drop the Task table
         with db.engine.connect() as conn:
             result = conn.execute(text('DROP TABLE IF EXISTS task'))
         return jsonify({'success': True, 'message': 'Task table dropped successfully!'})
@@ -182,7 +181,6 @@ def drop_task_table():
 @app.route('/recreate_task_table', methods=['GET'])
 def recreate_task_table():
     try:
-        # Execute a raw SQL query to recreate the Task table
         with db.engine.connect() as conn:
             query = """
             CREATE TABLE IF NOT EXISTS task (
@@ -200,7 +198,6 @@ def recreate_task_table():
 @app.route('/drop_user_table', methods=['GET'])
 def drop_user_table():
     try:
-        # Execute a raw SQL query to drop the User table
         with db.engine.connect() as conn:
             result = conn.execute(text('DROP TABLE IF EXISTS user'))
         return jsonify({'success': True, 'message': 'User table dropped successfully!'})
@@ -211,7 +208,6 @@ def drop_user_table():
 @app.route('/recreate_user_table', methods=['GET'])
 def recreate_user_table():
     try:
-        # Execute a raw SQL query to recreate the User table
         with db.engine.connect() as conn:
             query = """
             CREATE TABLE IF NOT EXISTS user (
