@@ -68,7 +68,6 @@ def signin():
         user = User.query.filter_by(email=email).first()
         if user and check_password_hash(user.password_hash, password):
             login_user(user)
-            flash('You have been successfully logged in!', 'success')
 
             # Retrieve tasks from the database
             tasks = Task.query.filter_by(user_id=user.id).all()
@@ -201,7 +200,7 @@ def export_tasks(format):
 def drop_task_table():
     try:
         with db.engine.connect() as conn:
-            result = conn.execute(text('DROP TABLE IF EXISTS task'))
+            conn.execute(text('DROP TABLE IF EXISTS task'))
         return jsonify({'success': True, 'message': 'Task table dropped successfully!'})
     except Exception as e:
         return jsonify({'success': False, 'message': 'Failed to drop Task table: ' + str(e)})
@@ -218,7 +217,7 @@ def recreate_task_table():
                 type VARCHAR(20) NOT NULL
             )
             """
-            result = conn.execute(text(query))
+            conn.execute(text(query))
         return jsonify({'success': True, 'message': 'Task table recreated successfully!'})
     except Exception as e:
         return jsonify({'success': False, 'message': 'Failed to recreate Task table: ' + str(e)})
@@ -228,7 +227,7 @@ def recreate_task_table():
 def drop_user_table():
     try:
         with db.engine.connect() as conn:
-            result = conn.execute(text('DROP TABLE IF EXISTS user'))
+            conn.execute(text('DROP TABLE IF EXISTS user'))
         return jsonify({'success': True, 'message': 'User table dropped successfully!'})
     except Exception as e:
         return jsonify({'success': False, 'message': 'Failed to drop User table: ' + str(e)})
@@ -245,7 +244,7 @@ def recreate_user_table():
                 password_hash VARCHAR(255) NOT NULL
             )
             """
-            result = conn.execute(text(query))
+            conn.execute(text(query))
         return jsonify({'success': True, 'message': 'User table recreated successfully!'})
     except Exception as e:
         return jsonify({'success': False, 'message': 'Failed to recreate User table: ' + str(e)})
