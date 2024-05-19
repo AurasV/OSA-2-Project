@@ -25,8 +25,7 @@ $(document).ready(function() {
     // Event listener for task edit icon click
     $(document).on('click', '.edit-task-icon', function() {
         var taskId = $(this).closest('li').attr('data-task-id');
-        var isAuthenticated = "{{ current_user.is_authenticated }}";
-        if(isAuthenticated === 'true') {
+        if(isAuthenticated === true) {
             var newText = prompt('Enter the new text for the task:');
             if (newText !== null && newText.trim() !== '') {
                 editTask(taskId, newText);
