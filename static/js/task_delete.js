@@ -1,3 +1,5 @@
+// task_delete.js
+
 $(document).ready(function() {
     // Function to handle deleting a task
     function deleteTask(taskId) {

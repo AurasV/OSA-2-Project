@@ -1,3 +1,5 @@
+// register.js
+
 $(document).ready(function() {
     // Password restrictions
     $('#password-info').text('Password must be at least 8 characters long, contain at least one uppercase letter and one number.');

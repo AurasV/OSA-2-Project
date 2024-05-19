@@ -38,6 +38,7 @@ A simple To-do list made using Flask, CSS (Tailwind), HTML and JavaScript. The u
 - typing_extensions==4.11.0
 - tzdata==2024.1
 - urllib3==2.2.1
+- waitress==3.0.0
 - Werkzeug==3.0.3
 
 ## Features
@@ -48,6 +49,7 @@ A simple To-do list made using Flask, CSS (Tailwind), HTML and JavaScript. The u
 - Login/Logout
 - Dark Mode
 - Exporting to CSV/XLSX
+- Multithreading using Waitress
 
 ## TO DO (Future Features)
 - Add a calendar feature

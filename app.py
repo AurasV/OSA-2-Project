@@ -15,7 +15,6 @@ db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 
 
-# Define the User model
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
@@ -262,4 +261,6 @@ def logout():
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-    app.run(debug=True, host='0.0.0.0', port=5000)
+
+    from waitress import serve
+    serve(app, host="0.0.0.0", port=5000, threads=16)
