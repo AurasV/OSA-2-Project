@@ -6,7 +6,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const exportExcelButton = document.getElementById('export-excel');
 
     exportButton.addEventListener('click', function () {
-        exportModal.classList.remove('hidden');
+        var isAuthenticated = "{{ current_user.is_authenticated }}";
+        if (isAuthenticated === 'true') {
+            exportModal.classList.remove('hidden');
+        } else {
+            alert('Please log in to export tasks.');
+        }
     });
 
     closeModal.addEventListener('click', function () {

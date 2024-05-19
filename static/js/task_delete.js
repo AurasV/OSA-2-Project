@@ -23,8 +23,13 @@ $(document).ready(function() {
     // Event listener for task delete icon click
     $(document).on('click', '.delete-task-icon', function() {
         var taskId = $(this).closest('li').attr('data-task-id');
-        if (confirm('Are you sure you want to delete this task?')) {
-            deleteTask(taskId);
+        var isAuthenticated = "{{ current_user.is_authenticated }}";
+        if (isAuthenticated === 'true') {
+            if (confirm('Are you sure you want to delete this task?')) {
+                deleteTask(taskId);
+            }
+        } else {
+            alert('Please log in to delete a task.');
         }
     });
 

@@ -25,22 +25,31 @@ $(document).ready(function() {
     // Event listener for task edit icon click
     $(document).on('click', '.edit-task-icon', function() {
         var taskId = $(this).closest('li').attr('data-task-id');
-        var newText = prompt('Enter the new text for the task:');
-        if (newText !== null && newText.trim() !== '') {
-            editTask(taskId, newText);
+        var isAuthenticated = "{{ current_user.is_authenticated }}";
+        if(isAuthenticated === 'true') {
+            var newText = prompt('Enter the new text for the task:');
+            if (newText !== null && newText.trim() !== '') {
+                editTask(taskId, newText);
+            }
+        } else {
+            alert('Please log in to edit a task.');
         }
     });
 
     // Function to add event listeners for showing and hiding edit icon on hover
     function addHoverListeners() {
         $('.task-list').on('mouseenter', 'li', function() {
-            // Only append the edit icon if it's not already present same for delete icon
+            // Only append the edit icon if it's not already present same for delete icon and speech icon
             if(!$(this).find('.delete-task-icon').length) {
                 $(this).append('<i class="fas fa-trash delete-task-icon ml-2 text-red-500 cursor-pointer hidden"></i>');
             }
 
             if (!$(this).find('.edit-task-icon').length) {
                 $(this).append('<i class="fas fa-edit edit-task-icon ml-2 text-gray-500 cursor-pointer"></i>');
+            }
+
+            if(!$(this).find('.speak-task-icon').length) {
+                $(this).append('<i class="fas fa-volume-up speak-task-icon ml-2 text-blue-500 cursor-pointer"></i>');
             }
         });
 
