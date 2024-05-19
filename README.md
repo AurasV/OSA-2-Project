@@ -49,12 +49,12 @@ A simple To-do list made using Flask, CSS (Tailwind), HTML and JavaScript. The u
 - Login/Logout
 - Dark Mode
 - Exporting to CSV/XLSX
+- Text to Speech
 - Multithreading using Waitress
 
 ## TO DO (Future Features)
 - Add a calendar feature
 - Add a reminder feature
-- Add a text to speech feature
 
 ## Contributors
 - [Frimu Aurel-Viorel](https://github.com/AurasV)

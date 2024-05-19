@@ -104,6 +104,7 @@
     <script src="{{ url_for('static', filename='js/task_edit.js') }}"></script>
     <!-- Custom JavaScript for Task Deletion -->
     <script src="{{ url_for('static', filename='js/task_delete.js') }}"></script>
+    <!-- JavaScript to check if the user is authenticated -->
     <script type="text/javascript">
         var isAuthenticated = {{ 'true' if current_user.is_authenticated else 'false' }};
     </script>
