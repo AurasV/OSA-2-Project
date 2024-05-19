@@ -7,6 +7,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 import csv
 import pandas as pd
+from pyngrok import ngrok
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
@@ -257,9 +258,18 @@ def logout():
     return redirect(url_for('index'))
 
 
+def start_ngrok():
+    ngrok_tunnel = ngrok.connect('5000')
+    print('Ngrok URL:', ngrok_tunnel.public_url)
+    return ngrok_tunnel
+
+
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
 
+    ngrok_tunnel = start_ngrok()
+
     from waitress import serve
     serve(app, host="0.0.0.0", port=5000, threads=16)
+
