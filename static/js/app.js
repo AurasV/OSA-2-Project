@@ -1,4 +1,4 @@
-// export.js
+// app.js
 
 function setCookie(name, value, days) {
     var expires = "";
