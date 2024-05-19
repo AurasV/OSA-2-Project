@@ -16,6 +16,7 @@ A simple To-do list made using Flask, CSS (Tailwind), HTML and JavaScript. The u
 - certifi==2024.2.2
 - charset-normalizer==3.3.2
 - click==8.1.7
+- colorama==0.4.6
 - Flask==3.0.3
 - Flask-Caching==2.3.0
 - Flask-Cors==4.0.1
@@ -26,10 +27,16 @@ A simple To-do list made using Flask, CSS (Tailwind), HTML and JavaScript. The u
 - itsdangerous==2.2.0
 - Jinja2==3.1.4
 - MarkupSafe==2.1.5
+- numpy==1.26.4
+- pandas==2.2.2
+- python-dateutil==2.9.0.post0
+- pytz==2024.1
 - requests==2.31.0
+- six==1.16.0
 - SpeechRecognition==3.10.4
 - SQLAlchemy==2.0.30
 - typing_extensions==4.11.0
+- tzdata==2024.1
 - urllib3==2.2.1
 - Werkzeug==3.0.3
 
@@ -40,12 +47,12 @@ A simple To-do list made using Flask, CSS (Tailwind), HTML and JavaScript. The u
 - Local Caching
 - Login/Logout
 - Dark Mode
+- Exporting to CSV/XLSX
 
 ## TO DO (Future Features)
 - Add a calendar feature
 - Add a reminder feature
-- Add a search feature
-- Add an export feature
+- Add a text to speech feature
 
 ## Contributors
 - [Frimu Aurel-Viorel](https://github.com/AurasV)

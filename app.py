@@ -1,10 +1,12 @@
 # app.py
 import json
-from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, send_file
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+import csv
+import pandas as pd
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
@@ -166,6 +168,34 @@ def delete_task():
             return jsonify({'success': False, 'message': 'Task not found or unauthorized'})
     except Exception as e:
         return jsonify({'success': False, 'message': 'Failed to delete task: ' + str(e)})
+
+
+@app.route('/export_tasks/<format>', methods=['GET'])
+@login_required
+def export_tasks(format):
+    user_id = current_user.id
+    tasks = Task.query.filter_by(user_id=user_id).all()
+
+    # Create data in list of dictionaries format
+    data = [{'id': task.id, 'task': task.task, 'type': task.type} for task in tasks]
+
+    if format == 'csv':
+        # Create a CSV file
+        with open('tasks.csv', 'w', newline='') as csvfile:
+            fieldnames = ['id', 'task', 'type']
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer.writeheader()
+            for row in data:
+                writer.writerow(row)
+        return send_file('tasks.csv', as_attachment=True)
+
+    elif format == 'excel':
+        # Create an Excel file
+        df = pd.DataFrame(data)
+        df.to_excel('tasks.xlsx', index=False)
+        return send_file('tasks.xlsx', as_attachment=True)
+
+    return jsonify({'success': False, 'message': 'Invalid format'}), 400
 
 
 @app.route('/drop_task_table', methods=['GET'])
