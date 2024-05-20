@@ -1,0 +1,80 @@
+<!-- sign-in.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In</title>
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <!-- Custom Styles -->
+    <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <!-- Header -->
+    <header class="bg-white border-b p-4 flex justify-between items-center">
+        <div class="flex items-center">
+            <a href="/" class="flex items-center">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="w-10 h-10 mr-2">
+                <h1 class="text-xl font-semibold">NAME HERE</h1>
+            </a>
+        </div>
+        <div class="flex items-center">
+            <button id="toggle-dark-mode" class="bg-gray-200 hover:bg-gray-300 rounded-full w-8 h-8 flex items-center justify-center mr-2">
+                <i id="dark-mode-icon" class="fas fa-moon text-gray-700"></i>
+            </button>
+            <a href="/" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded inline-block">Home Page</a>
+        </div>
+    </header>
+
+    <!-- Main content -->
+    <main class="container mx-auto px-4 py-8">
+        <div class="max-w-md mx-auto bg-white rounded-lg overflow-hidden shadow-lg p-6 dark:bg-gray-800 dark:text-white">
+            <!-- Sign In Form -->
+            <form method="post">
+                <div class="mb-4">
+                    <label for="email" class="block text-sm font-semibold">Email Address</label>
+                    <input type="email" id="email" name="email" class="border border-gray-300 rounded-md px-3 py-2 w-full focus:outline-none focus:border-blue-500 dark:bg-gray-700 dark:text-white" placeholder="Enter your email">
+                </div>
+                <div class="mb-6">
+                    <label for="password" class="block text-sm font-semibold">Password</label>
+                    <input type="password" id="password" name="password" class="border border-gray-300 rounded-md px-3 py-2 w-full focus:outline-none focus:border-blue-500 dark:bg-gray-700 dark:text-white" placeholder="Enter your password">
+                </div>
+                <!-- Sign In Button -->
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded w-full">Sign In</button>
+                <!-- Text to prompt registration -->
+                <p class="text-sm text-gray-600 mt-2 text-center">Don't have an account? <a href="/register" class="text-blue-500">Register!</a></p>
+            </form>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="mt-4 bg-{{ category }}">
+                            <p class="text-sm text-white py-2 px-4">{{ message }}</p>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-300 p-4 mt-auto">
+        <div class="container mx-auto">
+            <div class="flex items-center justify-between">
+                <div class="text-gray-700">
+                    Built by X and Y
+                </div>
+                <div class="text-gray-700">
+                    Source Code available on <a href="#" target="_blank"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom JavaScript for dark mode and cookie retrieval -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

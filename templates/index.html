@@ -1,0 +1,113 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Custom Styles -->
+    <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
+    <!-- Custom JavaScript for Text-to-Speech -->
+    <script src="{{ url_for('static', filename='js/task_speech.js') }}"></script>
+</head>
+<body class="flex flex-col min-h-screen bg-gray-100">
+    <!-- Disclaimer -->
+    {% if not current_user.is_authenticated %}
+        <div class="bg-yellow-100 border-yellow-500 text-yellow-700 px-4 py-3 mb-4" role="alert">
+            <p class="font-bold">Disclaimer:</p>
+            <p class="text-sm">The data shown to you is the cached data, it might not be up-to-date!</p>
+            <p class="text-sm">Please log in to get the latest data and to edit.</p>
+        </div>
+    {% endif %}
+
+    <!-- Header -->
+    <header class="bg-white border-b p-4 flex justify-between items-center">
+        <!-- Left section -->
+        <div class="flex items-center">
+            <!-- Logo and title -->
+            <a href="/" class="flex items-center">
+                <!-- Logo -->
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="w-10 h-10 mr-2">
+                <!-- Title -->
+                <h1 class="text-xl font-semibold">NAME HERE</h1>
+            </a>
+        </div>
+        <!-- Center section -->
+        <div class="flex items-center justify-center flex-grow">
+            {% if current_user.is_authenticated %}
+                <!-- Reload data button (shown only for authenticated users) -->
+                <button id="reload-data" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded inline-block">Reload Data From the Server</button>
+            {% endif %}
+        </div>
+            <button id="toggle-dark-mode" class="bg-gray-200 hover:bg-gray-300 rounded-full w-8 h-8 flex items-center justify-center mr-2">
+                <i id="dark-mode-icon" class="fas fa-moon text-gray-700"></i>
+            </button>
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('logout') }}" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded inline-block">Log Out</a>
+            {% else %}
+                <a href="{{ url_for('signin') }}" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded inline-block">Log In</a>
+            {% endif %}
+    </header>
+    <div class="container mx-auto py-8">
+        <!-- Urgent Tasks -->
+        <div class="grid grid-cols-4 gap-4">
+            <div class="bg-white rounded shadow p-4 form-square">
+                <h2 class="text-lg font-semibold mb-4">Urgent Tasks</h2>
+                <ul id="urgent-tasks" class="task-list space-y-2"></ul>
+                <form id="add-urgent-task-form" class="add-task-form mt-4">
+                    <input type="text" id="urgent-task-input" class="w-full border rounded py-2 px-3 focus:outline-none focus:border-blue-500" placeholder="Add urgent task...">
+                    <button type="submit" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-2 inline-block hover:bg-blue-600 transition-colors duration-300">Add Task</button>
+                </form>
+            </div>
+            <!-- Normal Tasks -->
+            <div class="bg-white rounded shadow p-4 form-square">
+                <h2 class="text-lg font-semibold mb-4">Normal Tasks</h2>
+                <ul id="normal-tasks" class="task-list space-y-2"></ul>
+                <form id="add-normal-task-form" class="add-task-form mt-4">
+                    <input type="text" id="normal-task-input" class="w-full border rounded py-2 px-3 focus:outline-none focus:border-blue-500" placeholder="Add normal task...">
+                    <button type="submit" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-2 inline-block hover:bg-blue-600 transition-colors duration-300">Add Task</button>
+                </form>
+            </div>
+            <!-- Future Tasks -->
+            <div class="bg-white rounded shadow p-4 form-square">
+                <h2 class="text-lg font-semibold mb-4">Future Tasks</h2>
+                <ul id="future-tasks" class="task-list space-y-2"></ul>
+                <form id="add-future-task-form" class="add-task-form mt-4">
+                    <input type="text" id="future-task-input" class="w-full border rounded py-2 px-3 focus:outline-none focus:border-blue-500" placeholder="Add future task...">
+                    <button type="submit" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-2 inline-block hover:bg-blue-600 transition-colors duration-300">Add Task</button>
+                </form>
+            </div>
+            <!-- Repetitive Tasks -->
+            <div class="bg-white rounded shadow p-4 form-square">
+                <h2 class="text-lg font-semibold mb-4">Repetitive Tasks</h2>
+                <ul id="repetitive-tasks" class="task-list space-y-2"></ul>
+                <form id="add-repetitive-task-form" class="add-task-form mt-4">
+                    <input type="text" id="repetitive-task-input" class="w-full border rounded py-2 px-3 focus:outline-none focus:border-blue-500" placeholder="Add repetitive task...">
+                    <button type="submit" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-2 inline-block hover:bg-blue-600 transition-colors duration-300">Add Task</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {% include 'footer.html' %}
+    <!-- Custom JavaScript for dark mode and cookie retrieval -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <!-- Custom JavaScript for Tasks -->
+    <script src="{{ url_for('static', filename='js/tasks.js') }}"></script>
+    <!-- Custom JavaScript for Task Editing -->
+    <script src="{{ url_for('static', filename='js/task_edit.js') }}"></script>
+    <!-- Custom JavaScript for Task Deletion -->
+    <script src="{{ url_for('static', filename='js/task_delete.js') }}"></script>
+    <!-- JavaScript to check if the user is authenticated -->
+    <script type="text/javascript">
+        var isAuthenticated = {{ 'true' if current_user.is_authenticated else 'false' }};
+    </script>
+</body>
+</html>

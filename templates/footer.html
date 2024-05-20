@@ -1,0 +1,34 @@
+<footer class="bg-white border-t border-gray-300 py-4 mt-auto">
+    <div class="container mx-auto">
+        <div class="flex items-center justify-between px-4">
+            <div class="flex-1 text-gray-700 text-left">
+                Built by <a href="https://github.com/AurasV" target="_blank" class="credit_footer">Frimu Aurel-Viorel</a> and <a href="https://github.com/730dora" target="_blank" class="credit_footer">Petre Teodora-Maria</a>
+            </div>
+            <div class="flex-1 text-center">
+                {% if current_user.is_authenticated %}
+                <button id="export-button" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">Export</button>
+                {% endif %}
+            </div>
+            <div class="flex-1 text-gray-700 text-right">
+                Source Code available on <a href="https://github.com/AurasV/OSA-2-Project" target="_blank"><i class="fab fa-github"></i></a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Export Modal -->
+<div id="export-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden bg-black bg-opacity-50">
+    <div class="bg-white border rounded-lg shadow-lg p-6">
+        <h2 class="text-xl mb-4">Export Tasks</h2>
+        <div class="flex justify-around space-x-4">
+            <button id="export-csv" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">Export as CSV</button>
+            <button id="export-excel" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">Export as Excel</button>
+        </div>
+        <button id="close-modal" class="mt-4 text-gray-600 hover:text-gray-800 transition">Cancel</button>
+    </div>
+</div>
+
+<!-- Include the export.js file -->
+<script src="{{ url_for('static', filename='js/export.js') }}"></script>
+<!-- Include xlsx library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>

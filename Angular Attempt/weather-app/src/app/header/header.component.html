@@ -1,0 +1,12 @@
+<mat-toolbar color="primary">
+  <div>
+    <mat-form-field appearance="fill">
+      <mat-label>Search city</mat-label>
+      <input matInput #cityInput>
+    </mat-form-field>
+    <button mat-button (click)="searchWeather(cityInput.value)">Search</button>
+    <button mat-button (click)="startSpeechRecognition()">Voice Search</button>
+  </div>
+  <span class="example-spacer"></span>
+  <div>{{ locationWeather?.city }}: {{ locationWeather?.temperature }}°C, {{ locationWeather?.description }}</div>
+</mat-toolbar>
