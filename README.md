@@ -4,11 +4,27 @@
 A simple To-do list made using Flask, CSS (Tailwind), HTML and JavaScript. The user can add modify and delete tasks. The tasks are stored in a SQLite database.
 Global access is done using ngrok. The application can be accessed from any device connected to the same network as the host either way.
 
-## Installation
+## Features
+- Add Tasks
+- Modify Tasks
+- Delete Tasks
+- Local Caching
+- Login/Logout
+- Dark Mode
+- Exporting to CSV/XLSX
+- Text to Speech
+- Multithreading using Waitress
+- Global Access using ngrok
+
+## TO DO (Future Features)
+- Add a calendar feature
+- Add a reminder feature
+
+## Installation and Running
 1. Clone the repository
 2. Install the required packages using `pip install -r requirements.txt`
 3. To access the application globally you will need to set the environment variable `NGROK_AUTHTOKEN` to your auth token. You can get one by signing up on [ngrok](https://ngrok.com/). To add it in PyCharm go to `Run -> Edit Configurations -> Environment Variables` and add a new variable with the name `NGROK_AUTHTOKEN` and the value your auth token like so `NGROK_AUTHTOKEN=your-auth-token`
-4. Run the application using `python app.py`
+4. Run the application using `python app.py` or using the configuration you just created in PyCharm
 5. Open the application in your browser at `http://127.0.0.1:5000`
 6. App can also be accessed from the local network using the ip `http://<your--IPv4-local-ip>:5000`
 
@@ -43,21 +59,6 @@ Global access is done using ngrok. The application can be accessed from any devi
 - urllib3==2.2.1
 - waitress==3.0.0
 - Werkzeug==3.0.3
-
-## Features
-- Add tasks
-- Modify tasks
-- Delete tasks
-- Local Caching
-- Login/Logout
-- Dark Mode
-- Exporting to CSV/XLSX
-- Text to Speech
-- Multithreading using Waitress
-
-## TO DO (Future Features)
-- Add a calendar feature
-- Add a reminder feature
 
 ## Contributors
 - [Frimu Aurel-Viorel](https://github.com/AurasV)
