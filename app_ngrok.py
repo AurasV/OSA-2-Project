@@ -265,10 +265,27 @@ if __name__ == "__main__":
         db.create_all()
 
     from waitress import serve
+    try:
+        listener = ngrok.forward(5000, authtoken=os.environ.get("NGROK_AUTHTOKEN"))
+        print(f"Access Globally using {listener.url()}")
+        print(f"Access Locally using http://localhost:5000 or http://127.0.0.1:5000")
+        print(f"Access On Other Devices in the same network using http://<your_local_ip_address>:5000")
+        serve(app, host="0.0.0.0", port=5000, threads=16)
+    except ValueError:
+        print("ngrok authentication failed, please check your authtoken environment variable")
+        print("if you want to run the app without global access, choose y, anything else will close the app")
+        print("Do you want to continue only locally? (y/n): ")
+        choice = input()
+        if choice != "y":
+            exit()
 
-    print(f"Access Locally using http://localhost:5000 or http://127.0.0.1:5000")
-    print(f"Access On Other Devices in the same network using http://<your_local_ip_address>:5000")
-    serve(app, host="0.0.0.0", port=5000, threads=16)
+        try:
+            print(f"Access Locally using http://localhost:5000 or http://127.0.0.1:5000")
+            print(f"Access On Other Devices in the same network using http://<your_local_ip_address>:5000")
+            serve(app, host="0.0.0.0", port=5000, threads=16)
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            exit()
 
 
 
