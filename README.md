@@ -62,4 +62,4 @@ Global access is done using ngrok. The application can be accessed from any devi
 
 ## Contributors
 - [Frimu Aurel-Viorel](https://github.com/AurasV)
-- [Petre Maria-Teodora](https://github.com/730dora)
+- [Petre Teodora-Maria](https://github.com/730dora)
