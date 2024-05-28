@@ -5,7 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-Do List</title>
+    <title>DUE</title>
+    <link rel="icon" href="static/images/new.png" type="image/png">
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Font Awesome -->
@@ -16,8 +17,38 @@
     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
     <!-- Custom JavaScript for Text-to-Speech -->
     <script src="{{ url_for('static', filename='js/task_speech.js') }}"></script>
+    
+    <style>
+        /* Background image and overlay */
+        .background {
+            background: url('{{ url_for('static', filename='images/index.jpg') }}') no-repeat center center fixed;
+            background-size: cover;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.7; /* Adjust the opacity as needed */
+        }
+
+        /* Full screen overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0); /* Semi-transparent overlay */
+            z-index: -1;
+        }
+    </style>
+
 </head>
 <body class="flex flex-col min-h-screen bg-gray-100">
+    
+    <div class="background"></div>
+    <div class="overlay"></div>
     <!-- Disclaimer -->
     {% if not current_user.is_authenticated %}
         <div class="bg-yellow-100 border-yellow-500 text-yellow-700 px-4 py-3 mb-4" role="alert">
@@ -34,9 +65,9 @@
             <!-- Logo and title -->
             <a href="/" class="flex items-center">
                 <!-- Logo -->
-                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="w-10 h-10 mr-2">
+                <img src="{{ url_for('static', filename='images/new.png') }}" alt="Logo" class="w-10 h-10 mr-2">
                 <!-- Title -->
-                <h1 class="text-xl font-semibold">NAME HERE</h1>
+                <h1 class="text-xl font-semibold">DUE</h1>
             </a>
         </div>
         <!-- Center section -->

@@ -1,25 +1,91 @@
-<!-- sign-in.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign In</title>
+    <title>DUE</title>
+    <link rel="icon" href="static/images/new.png" type="image/png">
     <!-- Tailwind CSS -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <!-- Custom Styles -->
     <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
+    <style>
+        /* Custom CSS for the clipboard box */
+        .clipboard-frame {
+            background-color: #ffffff;
+            border: 20px solid #a68a64;
+            padding: 20px;
+            border-radius: 12px;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .clipboard-clip {
+            position: absolute;
+            top: -25px; /* Adjust as needed */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px; /* Adjust as needed */
+            height: 30px; /* Adjust as needed */
+            background-color: #8d99ae;
+            border: 2px solid #e5e7eb;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+        }
+
+        .clipboard-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4b5563;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Registration form styles */
+        .sign-in {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Background image and overlay */
+        .background {
+            background: url('{{ url_for('static', filename='images/background2.jpg') }}') no-repeat center center fixed;
+            background-size: cover;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.7; /* Adjust the opacity as needed */
+        }
+
+        /* Full screen overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0); /* Semi-transparent overlay */
+            z-index: -1;
+        }
+    </style>
 </head>
 <body class="bg-gray-100">
+    
+    <div class="background"></div>
+    <div class="overlay"></div>
     <!-- Header -->
     <header class="bg-white border-b p-4 flex justify-between items-center">
         <div class="flex items-center">
             <a href="/" class="flex items-center">
-                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="w-10 h-10 mr-2">
-                <h1 class="text-xl font-semibold">NAME HERE</h1>
+                <img src="{{ url_for('static', filename='images/new.png') }}" alt="Logo" class="w-10 h-10 mr-2">
+                <h1 class="text-xl font-semibold">DUE</h1>
             </a>
         </div>
         <div class="flex items-center">
@@ -31,49 +97,40 @@
     </header>
 
     <!-- Main content -->
-    <main class="container mx-auto px-4 py-8">
-        <div class="max-w-md mx-auto bg-white rounded-lg overflow-hidden shadow-lg p-6 dark:bg-gray-800 dark:text-white">
-            <!-- Sign In Form -->
-            <form method="post">
-                <div class="mb-4">
-                    <label for="email" class="block text-sm font-semibold">Email Address</label>
-                    <input type="email" id="email" name="email" class="border border-gray-300 rounded-md px-3 py-2 w-full focus:outline-none focus:border-blue-500 dark:bg-gray-700 dark:text-white" placeholder="Enter your email">
-                </div>
-                <div class="mb-6">
-                    <label for="password" class="block text-sm font-semibold">Password</label>
-                    <input type="password" id="password" name="password" class="border border-gray-300 rounded-md px-3 py-2 w-full focus:outline-none focus:border-blue-500 dark:bg-gray-700 dark:text-white" placeholder="Enter your password">
-                </div>
-                <!-- Sign In Button -->
-                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded w-full">Sign In</button>
-                <!-- Text to prompt registration -->
-                <p class="text-sm text-gray-600 mt-2 text-center">Don't have an account? <a href="/register" class="text-blue-500">Register!</a></p>
-            </form>
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    {% for category, message in messages %}
-                        <div class="mt-4 bg-{{ category }}">
-                            <p class="text-sm text-white py-2 px-4">{{ message }}</p>
-                        </div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
+    <main class="container mx-auto px-4 py-8 flex justify-center items-center h-screen">
+        <div class="relative">
+            <div class="clipboard-frame">
+                <div class="clipboard-clip"></div> <!-- Clipboard clip -->
+                <h2 class="clipboard-title">Sign In</h2>
+                <!-- Sign In Form -->
+                <form method="post" class="sign-in-form">
+                    <div class="mb-4">
+                        <label for="email" class="block text-sm font-semibold">Email Address</label>
+                        <input type="email" id="email" name="email" class="border border-gray-300 rounded-md px-3 py-2 w-full focus:outline-none focus:border-blue-500 dark:bg-gray-700 dark:text-white" placeholder="Enter your email">
+                    </div>
+                    <div class="mb-6">
+                        <label for="password" class="block text-sm font-semibold">Password</label>
+                        <input type="password" id="password" name="password" class="border border-gray-300 rounded-md px-3 py-2 w-full focus:outline-none focus:border-blue-500 dark:bg-gray-700 dark:text-white" placeholder="Enter your password">
+                    </div>
+                    <!-- Sign In Button -->
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded w-full">Sign In</button>
+                    <!-- Text to prompt registration -->
+                    <p class="text-sm text-gray-600 mt-2 text-center">Don't have an account? <a href="/register" class="text-blue-500">Register!</a></p>
+                </form>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="mt-4 bg-{{ category }}">
+                                <p class="text-sm text-white py-2 px-4">{{ message }}</p>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-white border-t border-gray-300 p-4 mt-auto">
-        <div class="container mx-auto">
-            <div class="flex items-center justify-between">
-                <div class="text-gray-700">
-                    Built by X and Y
-                </div>
-                <div class="text-gray-700">
-                    Source Code available on <a href="#" target="_blank"><i class="fab fa-github"></i></a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
+    {% include 'footer.html' %}
     <!-- Custom JavaScript for dark mode and cookie retrieval -->
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>
